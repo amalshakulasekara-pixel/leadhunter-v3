@@ -1147,7 +1147,8 @@ function searchDone(query, error) {
   }
   // Get related searches
   getRelated(query);
-  toast(`Found ${searchResults.length} businesses`, 'ok');
+  const pgCount = Math.ceil(searchResults.length/20);
+  toast(`Found ${searchResults.length} businesses (${pgCount} page${pgCount>1?'s':''} from Google Maps)`, 'ok');
 }
 
 function searchError(msg) {
@@ -1227,7 +1228,7 @@ function renderCampaignPanel(camps) {
     const pct = c.total ? Math.round((reviewed/c.total)*100) : 0;
     return `<div class="camp-card">
       <div class="camp-kw">
-        <div>${c.keyword}</div>
+        <div>${c.keyword}<span style="font-size:10px;color:var(--t2)"> (${c.total} results)</span></div>
         <div class="camp-prog-lbl">${reviewed}/${c.total} reviewed</div>
         <div class="camp-prog-track"><div class="camp-prog-fill" style="width:${pct}%"></div></div>
       </div>
@@ -1322,6 +1323,24 @@ async function addToCRMCampaign(bizJson) {
   else toast('Failed to add','err');
 }
 
+async function addToCRMByPlaceId(placeId) {
+  const biz = searchResults.find(r => r.place_id === placeId);
+  if (!biz) return toast('Result not found — try refreshing','warn');
+  const lead = {place_id:biz.place_id,name:biz.name,phone:biz.phone,website:biz.website,address:biz.address,rating:biz.rating,reviews:biz.reviews,types:biz.types,maps_url:biz.maps_url,photo:biz.photo,analysis:biz.analysis,priority:biz.analysis?.priority||5};
+  const r = await api('/api/leads','POST',{action:'add',lead});
+  if (r.ok) {
+    toast(biz.name+' added','ok');
+    await loadLeads();
+    renderResultCards(searchResults);
+    if (activeCampaignId) {
+      campaignResultStatuses[placeId]='added';
+      fetch('/api/campaigns',{method:'POST',headers:{'content-type':'application/json','x-auth-token':authToken},
+        body:JSON.stringify({action:'update_result',id:activeCampaignId,place_id:placeId,review_status:'added'})}).catch(()=>{});
+    }
+  } else if (r.error==='Duplicate') toast('Already in CRM','warn');
+  else toast('Failed to add','err');
+}
+
 async function deleteCampaign(id) {
   if (!confirm('Delete this campaign?')) return;
   await fetch('/api/campaigns',{method:'POST',headers:{'content-type':'application/json','x-auth-token':authToken},body:JSON.stringify({action:'delete',id})});
@@ -1378,7 +1397,6 @@ function resultCardHTML(biz) {
   const pPct = Math.min(100,(a.priority||5)*10);
   const pColor = (a.priority||5)>=8?'var(--red)':(a.priority||5)>=6?'var(--yellow)':(a.priority||5)>=4?'var(--accent)':'var(--green)';
   const inCRM = leads.some(l => l.place_id===biz.place_id || (biz.phone && l.phone===biz.phone));
-  const bzJSON = encodeURIComponent(JSON.stringify(biz));
 
   return `<div class="rcard" id="rc-${biz.place_id}">
     <div class="rcard-photo">
@@ -1399,7 +1417,7 @@ function resultCardHTML(biz) {
       <div class="rcard-actions">
         ${inCRM
           ? '<span class="btn btn-s btn-xs" style="opacity:.5;cursor:default">✓ In CRM</span>'
-          : `<button class="btn btn-p btn-xs" onclick='addToCRMCampaign(decodeURIComponent("${bzJSON}"))'><i class="ri-add-line"></i> Add</button>`}
+          : `<button class="btn btn-p btn-xs" onclick="addToCRMByPlaceId('${biz.place_id}')"><i class="ri-add-line"></i> Add</button>`}
         ${biz.phone?`<button class="btn btn-s btn-xs" onclick="window.open('tel:${biz.phone}')"><i class="ri-phone-line"></i></button>`:''}
         ${biz.website?`<a class="btn btn-s btn-xs" href="${biz.website}" target="_blank" style="text-decoration:none"><i class="ri-external-link-line"></i></a>`:''}
         ${biz.maps_url?`<a class="btn btn-s btn-xs" href="${biz.maps_url}" target="_blank" style="text-decoration:none"><i class="ri-map-pin-2-line"></i></a>`:''}
@@ -1598,7 +1616,7 @@ function openLead(id) {
       <button class="qlog-btn ql-int" onclick="quickLog('${id}','interested')">✓ Interested</button>
       <button class="qlog-btn ql-cb" onclick="openDealCalc('${id}')">💰 + Deal Value</button>
       <button class="qlog-btn ql-cb" onclick="quickLog('${id}','callback')">📅 Callback</button>
-      <button class="qlog-btn ql-won" onclick="moveToAdvance('${id}')">💳 Advance Waiting</button>
+      <button class="qlog-btn ql-won" onclick="moveToAdvance('${id}')">💳 ${l.payment_plan ? 'Edit Payment Plan' : 'Set Payment Plan'}</button>
       <button class="qlog-btn ql-won" onclick="quickLog('${id}','advance_received')">✅ Advance Received</button>
       <button class="qlog-btn ql-won" onclick="quickLog('${id}','completed')">🏆 Completed</button>
       <button class="qlog-btn ql-ni" onclick="quickLog('${id}','not_interested')">✗ Not Interested</button>
@@ -1816,6 +1834,12 @@ async function savePaymentPlan() {
   renderLeads();
 }
 
+function editPaymentPlan(id) {
+  const l = leads.find(x=>x.id===id);
+  if (!l) return;
+  moveToAdvance(id);
+}
+
 // ════════════════════════════════════════
 // WA TEMPLATE EDITOR
 // ════════════════════════════════════════
@@ -1887,7 +1911,7 @@ function renderPayments() {
 
   const list = document.getElementById('payCardsList');
   const items = paymentsData.leads||[];
-  if (!items.length) { list.innerHTML='<div class="empty"><i class="ri-money-dollar-circle-line"></i><p>No payment plans yet.<br>Move a lead to "Advance Waiting" to create one.</p></div>'; return; }
+  if (!items.length) { list.innerHTML='<div class="empty"><i class="ri-money-dollar-circle-line"></i><p>No payment plans yet.<br>Open a lead → click "Set Payment Plan" to create one.</p></div>'; return; }
   list.innerHTML = items.map(lead=>paymentCardHTML(lead)).join('');
 }
 
@@ -1906,6 +1930,7 @@ function paymentCardHTML(lead) {
       <div style="text-align:right">
         <div style="font-size:13px;font-weight:700;color:var(--text)">Rs ${(plan.total_value||0).toLocaleString()}</div>
         <div style="font-size:11px;color:var(--t2)">Total Deal</div>
+        <button class="btn btn-s btn-xs" style="margin-top:5px" onclick="editPaymentPlan('${lead.id}')"><i class="ri-edit-line"></i> Edit</button>
       </div>
     </div>
     <div class="pay-advance-row">
@@ -2512,8 +2537,11 @@ function assembleSiteFromDraft(draft) {
   let result = skeleton;
   if (sectionStyles.length) result = result.replace('</head>', sectionStyles.join('\n')+'\n</head>');
   const sectionsHtml = sectionBodies.join('\n');
-  result = result.replace('<!-- SECTIONS_START -->\n<!-- SECTIONS_END -->', sectionsHtml)
-                 .replace('<!-- SECTIONS_START --><!-- SECTIONS_END -->', sectionsHtml);
+  result = result.replace(/[ \t]*<!--\s*SECTIONS_START\s*-->[\s\S]*?<!--\s*SECTIONS_END\s*-->/g, sectionsHtml);
+  // Fallback: if placeholder not found, insert before </main>
+  if (!result.includes(sectionsHtml) && sectionsHtml) {
+    result = result.replace('</main>', sectionsHtml + '\n</main>');
+  }
   return result;
 }
 
