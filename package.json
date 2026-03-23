@@ -1,0 +1,8 @@
+{
+  "name": "leadhunter-crm",
+  "version": "3.0.0",
+  "type": "module",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

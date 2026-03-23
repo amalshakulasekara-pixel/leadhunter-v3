@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadHunter Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+:root {
+  --bg:#080c14;--bg2:#0f1520;--bg3:#161f30;--card:#111827;--border:rgba(79,138,255,.13);
+  --accent:#4f8aff;--a2:#00e5a0;--text:#e2eaf8;--t2:#7a90b8;--t3:#3a4a6a;
+  --red:#ff4757;--yellow:#ffa502;--green:#00e5a0;--purple:#a855f7;
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;
+  background-image:radial-gradient(ellipse 60% 60% at 30% 50%,rgba(79,138,255,.07) 0,transparent 70%),
+                   radial-gradient(ellipse 50% 50% at 75% 40%,rgba(168,85,247,.05) 0,transparent 70%)}
+.lbox{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:380px;max-width:92vw;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.lbox-logo{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--purple);letter-spacing:-1px;margin-bottom:4px}
+.lbox-logo span{color:var(--text)}
+.lbox-sub{font-size:13px;color:var(--t2);margin-bottom:28px}
+.lbox input{width:100%;padding:13px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;outline:none;transition:border .2s;margin-bottom:10px;font-family:inherit}
+.lbox input:focus{border-color:var(--purple)}
+.lbox-btn{width:100%;padding:13px;background:var(--purple);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.lbox-btn:hover{background:#b86ef7;transform:translateY(-1px)}
+.lbox-err{color:var(--red);font-size:12px;margin-top:8px;display:none}
+
+/* APP */
+#app{display:none;flex-direction:column;min-height:100vh}
+.topbar{display:flex;align-items:center;gap:12px;padding:0 24px;height:58px;background:rgba(15,21,32,.95);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(16px)}
+.topbar-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--purple)}
+.topbar-logo span{color:var(--text);font-weight:400;font-size:14px;margin-left:8px;color:var(--t2)}
+.topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.ibtn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s}
+.ibtn:hover{border-color:var(--accent);color:var(--accent)}
+
+.nav-tabs{display:flex;gap:2px;padding:0 24px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.ntab{display:flex;align-items:center;gap:6px;padding:12px 16px;cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;font-family:inherit}
+.ntab:hover{color:var(--text)}
+.ntab.active{color:var(--purple);border-bottom-color:var(--purple)}
+
+.main{flex:1;padding:24px;max-width:1200px;margin:0 auto;width:100%}
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;font-family:inherit}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-p{background:var(--purple);color:#fff}.btn-p:hover:not(:disabled){background:#b86ef7}
+.btn-s{background:var(--bg3);border:1px solid var(--border);color:var(--text)}.btn-s:hover:not(:disabled){border-color:var(--purple);color:var(--purple)}
+.btn-r{background:rgba(255,71,87,.12);border:1px solid var(--red);color:var(--red)}.btn-r:hover:not(:disabled){background:var(--red);color:#fff}
+.btn-g{background:rgba(0,229,160,.12);border:1px solid var(--green);color:var(--green)}.btn-g:hover:not(:disabled){background:var(--green);color:#000}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:7px}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+
+/* Section header */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+.sec-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700}
+
+/* Log table */
+.log-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.log-filters select,.log-filters input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px 12px;font-size:12px;font-family:inherit;outline:none}
+.log-filters select:focus,.log-filters input:focus{border-color:var(--purple)}
+.log-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--bg3)}
+th{padding:10px 14px;text-align:left;color:var(--t2);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+td{padding:10px 14px;border-top:1px solid rgba(79,138,255,.07);color:var(--text);vertical-align:top}
+tr:hover td{background:rgba(79,138,255,.04)}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
+.badge-search{background:rgba(79,138,255,.15);color:var(--accent)}
+.badge-lead{background:rgba(0,229,160,.15);color:var(--green)}
+.badge-gen{background:rgba(168,85,247,.15);color:var(--purple)}
+.badge-deploy{background:rgba(255,107,53,.15);color:#ff6b35}
+.badge-delete{background:rgba(255,71,87,.15);color:var(--red)}
+.badge-other{background:var(--bg3);color:var(--t2)}
+.log-meta{font-size:11px;color:var(--t2);margin-top:3px}
+.pagination{display:flex;align-items:center;gap:8px;margin-top:16px;justify-content:center}
+.page-btn{padding:6px 12px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--t2);cursor:pointer;font-size:12px;font-family:inherit;transition:all .15s}
+.page-btn:hover:not(:disabled){border-color:var(--purple);color:var(--purple)}
+.page-btn:disabled{opacity:.4;cursor:not-allowed}
+.page-info{font-size:12px;color:var(--t2);padding:0 8px}
+.empty-state{text-align:center;padding:48px 24px;color:var(--t2)}
+.empty-state i{font-size:40px;margin-bottom:12px;display:block;opacity:.4}
+
+/* Prompt editor */
+.prompt-editor-wrap{display:flex;flex-direction:column;gap:16px}
+.prompt-meta{font-size:12px;color:var(--t2)}
+#promptEditor{width:100%;height:520px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:12.5px;font-family:'DM Mono',monospace,sans-serif;padding:16px;resize:vertical;outline:none;line-height:1.65;transition:border .2s}
+#promptEditor:focus{border-color:var(--purple)}
+.prompt-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.prompt-status{font-size:12px;margin-left:auto;padding:6px 12px;border-radius:7px;background:var(--bg3);color:var(--t2)}
+.prompt-status.saved{background:rgba(0,229,160,.12);color:var(--green)}
+.prompt-status.error{background:rgba(255,71,87,.1);color:var(--red)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;display:none;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);gap:8px;align-items:center}
+.toast.show{display:flex}
+.toast.ok{border-color:var(--green);color:var(--green)}
+.toast.err{border-color:var(--red);color:var(--red)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="lbox">
+    <div class="lbox-logo">Admin <span>Panel</span></div>
+    <div class="lbox-sub">LeadHunter — Restricted Access</div>
+    <input type="password" id="adminPw" placeholder="Admin password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    <button class="lbox-btn" onclick="doAdminLogin()">Sign In</button>
+    <div class="lbox-err" id="loginErr">Incorrect password</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">Admin <span>LeadHunter CRM v3</span></div>
+    <div class="topbar-right">
+      <button class="ibtn" title="Back to app" onclick="window.location.href='/'"><i class="ri-arrow-left-line"></i></button>
+      <button class="ibtn" title="Sign out" onclick="signOut()"><i class="ri-logout-box-r-line"></i></button>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="ntab active" onclick="switchTab('log')"><i class="ri-history-line"></i> Activity Log</button>
+    <button class="ntab" onclick="switchTab('prompt')"><i class="ri-magic-line"></i> Prompt Editor</button>
+  </div>
+
+  <div class="main">
+
+    <!-- LOG TAB -->
+    <div class="tab-pane active" id="tab-log">
+      <div class="sec-hdr">
+        <div class="sec-title">Activity Log</div>
+        <button class="btn btn-r btn-sm" onclick="clearLog()"><i class="ri-delete-bin-line"></i> Clear All</button>
+      </div>
+      <div class="log-filters">
+        <select id="filterType" onchange="loadLog(1)">
+          <option value="">All Events</option>
+          <option value="search">Search</option>
+          <option value="lead_added">Lead Added</option>
+          <option value="lead_deleted">Lead Deleted</option>
+          <option value="website_generated">Website Generated</option>
+          <option value="site_deployed">Site Deployed</option>
+        </select>
+        <input type="date" id="filterFrom" onchange="loadLog(1)" placeholder="From">
+        <input type="date" id="filterTo" onchange="loadLog(1)" placeholder="To">
+        <button class="btn btn-s btn-sm" onclick="clearFilters()"><i class="ri-refresh-line"></i> Reset</button>
+        <button class="btn btn-s btn-sm" style="margin-left:auto" onclick="loadLog(currentLogPage)"><i class="ri-refresh-line"></i> Refresh</button>
+      </div>
+      <div class="log-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Time</th><th>Event</th><th>Details</th><th>IP</th></tr>
+          </thead>
+          <tbody id="logBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="logPagination"></div>
+    </div>
+
+    <!-- PROMPT TAB -->
+    <div class="tab-pane" id="tab-prompt">
+      <div class="sec-hdr">
+        <div class="sec-title">AI Generation Prompt</div>
+      </div>
+      <div class="card prompt-editor-wrap">
+        <p style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:4px">
+          This prompt is sent to the AI when generating websites. Edit it here and save — changes apply immediately on the next generation without redeploying.
+          Use <code style="background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px">{BUSINESS_BLOCK}</code>,
+          <code style="background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px">{QUALITY_LEVEL}</code>, and
+          <code style="background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px">{STYLE_REFS}</code> as placeholders.
+        </p>
+        <div class="prompt-meta" id="promptMeta">Loading...</div>
+        <textarea id="promptEditor" spellcheck="false"></textarea>
+        <div class="prompt-actions">
+          <button class="btn btn-p" onclick="savePrompt()"><i class="ri-save-line"></i> Save Prompt</button>
+          <button class="btn btn-s" onclick="resetPrompt()"><i class="ri-refresh-line"></i> Reset to Default</button>
+          <div class="prompt-status" id="promptStatus"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Auth ───────────────────────────────────────────────
+let adminToken = null;
+const ADMIN_PW_KEY = 'lh_admin_token';
+
+function doAdminLogin() {
+  const pw = document.getElementById('adminPw').value;
+  fetch('/api/auth', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ password: pw, type: 'admin' })
+  }).then(r => r.json()).then(d => {
+    if (d.ok) {
+      adminToken = d.token;
+      sessionStorage.setItem(ADMIN_PW_KEY, adminToken);
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      init();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+      setTimeout(() => document.getElementById('loginErr').style.display = 'none', 3000);
+    }
+  }).catch(() => toast('Connection error', 'err'));
+}
+
+function signOut() {
+  sessionStorage.removeItem(ADMIN_PW_KEY);
+  adminToken = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminPw').value = '';
+}
+
+document.getElementById('adminPw').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
+
+// Check session
+const saved = sessionStorage.getItem(ADMIN_PW_KEY);
+if (saved) {
+  adminToken = saved;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  setTimeout(init, 0);
+}
+
+// ─── Nav ────────────────────────────────────────────────
+let currentTab = 'log';
+function switchTab(name) {
+  currentTab = name;
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelectorAll('.ntab')[name === 'log' ? 0 : 1].classList.add('active');
+  if (name === 'log') loadLog(1);
+  if (name === 'prompt') loadPrompt();
+}
+
+function init() {
+  loadLog(1);
+}
+
+// ─── Activity Log ───────────────────────────────────────
+let currentLogPage = 1;
+
+async function loadLog(page) {
+  currentLogPage = page;
+  const type = document.getElementById('filterType').value;
+  const from = document.getElementById('filterFrom').value;
+  const to = document.getElementById('filterTo').value;
+
+  let url = `/api/log?page=${page}`;
+  if (type) url += `&type=${encodeURIComponent(type)}`;
+  if (from) url += `&from=${new Date(from).getTime()}`;
+  if (to) url += `&to=${new Date(to + 'T23:59:59').getTime()}`;
+
+  const body = document.getElementById('logBody');
+  body.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--t2)"><i class="ri-loader-4-line" style="animation:spin 1s linear infinite;display:inline-block"></i> Loading...</td></tr>`;
+
+  try {
+    const res = await fetch(url, { headers: { 'x-auth-token': adminToken } });
+    if (res.status === 401) { signOut(); return; }
+    const data = await res.json();
+    renderLogTable(data.entries || [], data.total || 0, data.page || 1, data.pages || 1);
+  } catch {
+    body.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--red)">Failed to load log</td></tr>`;
+  }
+}
+
+function renderLogTable(entries, total, page, pages) {
+  const body = document.getElementById('logBody');
+  if (!entries.length) {
+    body.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="ri-inbox-2-line"></i>No log entries found</div></td></tr>`;
+    document.getElementById('logPagination').innerHTML = '';
+    return;
+  }
+
+  const badgeClass = type => {
+    if (type === 'search') return 'badge-search';
+    if (type === 'lead_added') return 'badge-lead';
+    if (type === 'lead_deleted') return 'badge-delete';
+    if (type === 'website_generated') return 'badge-gen';
+    if (type === 'site_deployed') return 'badge-deploy';
+    return 'badge-other';
+  };
+
+  body.innerHTML = entries.map(e => {
+    const d = new Date(e.timestamp);
+    const time = d.toLocaleDateString('en-GB') + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const label = e.event_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const metaStr = e.meta ? JSON.stringify(e.meta, null, 0).slice(0, 120) : '';
+    return `<tr>
+      <td style="white-space:nowrap;color:var(--t2);font-size:12px">${time}</td>
+      <td><span class="badge ${badgeClass(e.event_type)}">${label}</span></td>
+      <td>
+        <div>${e.details || '—'}</div>
+        ${metaStr ? `<div class="log-meta">${metaStr}</div>` : ''}
+      </td>
+      <td style="font-size:12px;color:var(--t2)">${e.ip || '—'}</td>
+    </tr>`;
+  }).join('');
+
+  // Pagination
+  const pag = document.getElementById('logPagination');
+  if (pages <= 1) { pag.innerHTML = `<span class="page-info">${total} entries</span>`; return; }
+  pag.innerHTML = `
+    <button class="page-btn" onclick="loadLog(${page - 1})" ${page <= 1 ? 'disabled' : ''}><i class="ri-arrow-left-s-line"></i></button>
+    <span class="page-info">Page ${page} of ${pages} &middot; ${total} entries</span>
+    <button class="page-btn" onclick="loadLog(${page + 1})" ${page >= pages ? 'disabled' : ''}><i class="ri-arrow-right-s-line"></i></button>
+  `;
+}
+
+function clearFilters() {
+  document.getElementById('filterType').value = '';
+  document.getElementById('filterFrom').value = '';
+  document.getElementById('filterTo').value = '';
+  loadLog(1);
+}
+
+async function clearLog() {
+  if (!confirm('Delete all activity log entries? This cannot be undone.')) return;
+  // There's no delete-all endpoint; we write an empty log via a workaround POST
+  // For now, inform the user to do it via Netlify Blobs UI or we can add a clear action
+  toast('Log clearing requires Netlify Blobs console access — delete the "log" key in "activity-log" store', 'err');
+}
+
+// ─── Prompt Editor ──────────────────────────────────────
+const DEFAULT_PROMPT = `You are a world-class frontend web designer. Your job is to produce a single, complete, production-ready HTML file for a local business website that looks genuinely professional — not like a template.
+
+## BUSINESS CONTEXT
+{BUSINESS_BLOCK}
+
+## DESIGN PHILOSOPHY
+- Never use default blue/indigo/purple as a primary color. Derive the brand palette from the business type or extracted brand colors.
+- Typography: pair a display or serif font for headings with a clean sans-serif for body. Use tight tracking (-0.03em) on large headings, generous line-height (1.7) on body text.
+- Shadows: use layered, color-tinted box-shadows at low opacity, not flat shadow presets.
+- Gradients: layer multiple radial or linear gradients. Add subtle grain texture via SVG noise filter for depth.
+- Depth: surfaces must have a layering system — base → elevated → floating. Not all elements sit at the same z-plane.
+- Animations: use CSS transitions on transform and opacity only. Never transition-all. Use spring-style cubic-bezier easing.
+- Interactive states: every clickable element must have hover, focus-visible, and active states.
+- Images: use a gradient overlay and/or a color blend layer using mix-blend-multiply or multiply CSS filter.
+- Spacing: use intentional spacing tokens (multiples of 4px or 8px), not random values.
+
+## TECHNICAL REQUIREMENTS
+- Single HTML file, all styles inline in <style> tag, no external CSS files
+- Tailwind CSS via CDN: <script src="https://cdn.tailwindcss.com"><\/script>
+- Extend Tailwind config inline to set brand colors from the business
+- AOS.js via CDN for scroll animations (data-aos="fade-up" on sections)
+- Google Fonts: pick 2 fonts that suit the business tone (e.g., Playfair Display + DM Sans for elegant, Space Grotesk + Inter for modern tech)
+- Placeholder images: https://placehold.co/WIDTHxHEIGHT/HEXCOLOR/HEXCOLOR?text=...
+- WhatsApp CTA button linking to wa.me/{PHONE}
+- Netlify Forms: <form name="contact" method="POST" data-netlify="true"> on contact section
+- JSON-LD schema markup (LocalBusiness) in <head>
+- Mobile-first responsive, tested at 375px and 1280px
+- Sticky navigation header that shrinks slightly on scroll (CSS + minimal JS)
+
+## QUALITY LEVEL
+{QUALITY_LEVEL}
+- SIMPLE: Hero + About + Services + Contact (4 sections)
+- STANDARD: Hero + About + Services + Gallery + Testimonials + Contact (6 sections)
+- PREMIUM: Hero + About + Services + Gallery + Menu/Portfolio + Testimonials + FAQ + Contact (8 sections)
+
+## STYLE INSPIRATION
+{STYLE_REFS}
+(If provided: draw inspiration from the layout patterns, typography scale, and visual density — do NOT copy content. Adapt to the business.)
+
+## CONTENT RULES
+- Use real business name, address, phone, services from the context above
+- For sections where real content isn't provided (gallery, testimonials), write realistic placeholder copy that fits the business type and tone
+- All prices in Sri Lankan Rupees (Rs.) if pricing info is available
+
+## SECTION MARKERS (REQUIRED)
+Wrap every major section in these markers exactly:
+<!-- SECTION:hero START -->
+...hero HTML...
+<!-- SECTION:hero END -->
+<!-- SECTION:about START -->
+...
+<!-- SECTION:about END -->
+(etc. for each section)
+
+## OUTPUT
+Return ONLY the complete HTML file. No explanation, no markdown fences, no commentary. Start with <!DOCTYPE html> and end with </html>.`;
+
+async function loadPrompt() {
+  const meta = document.getElementById('promptMeta');
+  const editor = document.getElementById('promptEditor');
+  meta.textContent = 'Loading...';
+  try {
+    const res = await fetch('/api/meta', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-auth-token': adminToken },
+      body: JSON.stringify({ action: 'get_custom_prompt' })
+    });
+    if (res.status === 401) { signOut(); return; }
+    const data = await res.json();
+    if (data.prompt) {
+      editor.value = data.prompt;
+      meta.textContent = 'Loaded from saved prompt in Blobs';
+    } else {
+      editor.value = DEFAULT_PROMPT;
+      meta.textContent = 'Using built-in default prompt (not yet saved)';
+    }
+  } catch {
+    editor.value = DEFAULT_PROMPT;
+    meta.textContent = 'Could not load — showing default';
+  }
+}
+
+async function savePrompt() {
+  const prompt = document.getElementById('promptEditor').value.trim();
+  if (!prompt) { toast('Prompt cannot be empty', 'err'); return; }
+  const status = document.getElementById('promptStatus');
+  status.textContent = 'Saving...';
+  status.className = 'prompt-status';
+  try {
+    const res = await fetch('/api/meta', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-auth-token': adminToken },
+      body: JSON.stringify({ action: 'set_custom_prompt', prompt })
+    });
+    if (res.status === 401) { signOut(); return; }
+    const data = await res.json();
+    if (data.ok) {
+      status.textContent = 'Saved successfully';
+      status.className = 'prompt-status saved';
+      document.getElementById('promptMeta').textContent = 'Saved to Blobs — active on next generation';
+      toast('Prompt saved', 'ok');
+      setTimeout(() => { status.textContent = ''; status.className = 'prompt-status'; }, 3000);
+    } else {
+      throw new Error(data.error);
+    }
+  } catch (e) {
+    status.textContent = 'Save failed';
+    status.className = 'prompt-status error';
+    toast('Failed to save: ' + e.message, 'err');
+  }
+}
+
+function resetPrompt() {
+  if (!confirm('Reset to the built-in default prompt? Your saved changes will be overwritten on next save.')) return;
+  document.getElementById('promptEditor').value = DEFAULT_PROMPT;
+  document.getElementById('promptMeta').textContent = 'Reset to default — click Save to apply';
+  const status = document.getElementById('promptStatus');
+  status.textContent = 'Unsaved changes';
+  status.className = 'prompt-status';
+}
+
+// ─── Toast ───────────────────────────────────────────────
+function toast(msg, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<i class="ri-${type === 'ok' ? 'check' : 'error-warning'}-line"></i> ${msg}`;
+  t.className = `toast show ${type}`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className = 'toast', 3500);
+}
+
+// Spin animation
+const style = document.createElement('style');
+style.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
