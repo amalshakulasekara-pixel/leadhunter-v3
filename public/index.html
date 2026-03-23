@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LeadHunter CRM v3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
 <style>
 :root {
-  --bg:#080c14;--bg2:#0f1520;--bg3:#161f30;--card:#111827;--border:rgba(79,138,255,.13);
-  --accent:#4f8aff;--a2:#00e5a0;--a3:#ff6b35;--text:#e2eaf8;--t2:#7a90b8;--t3:#3a4a6a;
+  --bg:#131a26;--bg2:#1a2436;--bg3:#222d42;--card:#1a2436;--border:rgba(100,150,255,.15);
+  --accent:#4f8aff;--a2:#00e5a0;--a3:#ff6b35;--text:#edf2fc;--t2:#8a9fc0;--t3:#4a5a7a;
   --red:#ff4757;--yellow:#ffa502;--green:#00e5a0;--purple:#a855f7;--pink:#ec4899;
-  --r:12px;--sh:0 4px 32px rgba(0,0,0,.5);
+  --r:12px;--sh:0 4px 24px rgba(0,0,0,.4);
   --model-color:#4f8aff;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--accent)}
 
@@ -27,7 +27,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
                    radial-gradient(ellipse 50% 50% at 75% 40%,rgba(0,229,160,.05) 0,transparent 70%)}
 .lbox{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px 40px;
   width:380px;max-width:92vw;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(79,138,255,.08)}
-.lbox-logo{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--accent);letter-spacing:-1.5px;margin-bottom:2px}
+.lbox-logo{font-family:'Inter',sans-serif;font-size:34px;font-weight:800;color:var(--accent);letter-spacing:-1.5px;margin-bottom:2px}
 .lbox-logo span{color:var(--a2)}
 .lbox-sub{font-size:13px;color:var(--t2);margin-bottom:32px}
 .lbox input{width:100%;padding:13px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;
@@ -44,7 +44,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 /* ── TOPBAR ── */
 .topbar{display:flex;align-items:center;gap:8px;padding:0 20px;height:58px;background:rgba(15,21,32,.95);
   border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;backdrop-filter:blur(16px)}
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;color:var(--accent);letter-spacing:-.5px;margin-right:8px;flex-shrink:0}
+.logo{font-family:'Inter',sans-serif;font-weight:800;font-size:19px;color:var(--accent);letter-spacing:-.5px;margin-right:8px;flex-shrink:0}
 .logo span{color:var(--a2)}
 .nav-tabs{display:flex;gap:2px;flex:1;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
 .nav-tabs::-webkit-scrollbar{display:none}
@@ -91,7 +91,7 @@ select.finput{cursor:pointer}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px}
 
 /* ── SECTION TITLE ── */
-.stitle{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;gap:7px;margin-bottom:14px}
+.stitle{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;gap:7px;margin-bottom:14px}
 
 /* ── SEARCH TAB ── */
 .search-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
@@ -154,7 +154,7 @@ select.finput{cursor:pointer}
 .pbar{height:3px;background:var(--bg3);overflow:hidden}
 .pbar-fill{height:100%;transition:width .6s}
 .rcard-body{padding:12px}
-.rcard-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:3px;line-height:1.3}
+.rcard-name{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;margin-bottom:3px;line-height:1.3}
 .rcard-addr{font-size:11.5px;color:var(--t2);margin-bottom:7px;display:flex;align-items:center;gap:3px}
 .rcard-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .mchip{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:3px}
@@ -196,7 +196,7 @@ select.finput{cursor:pointer}
 /* ── PAYMENTS TAB ── */
 .pay-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
 .pay-stat{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 14px}
-.pay-stat-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:2px}
+.pay-stat-val{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;margin-bottom:2px}
 .pay-stat-lbl{font-size:11px;color:var(--t2)}
 .pay-filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .pf-chip{padding:6px 14px;border-radius:20px;font-size:11.5px;font-weight:600;cursor:pointer;border:2px solid transparent;transition:all .15s;background:var(--bg3);color:var(--t2)}
@@ -232,7 +232,7 @@ select.finput{cursor:pointer}
   background:var(--bg3);border:none;color:var(--t2);cursor:pointer;font-size:15px;
   display:flex;align-items:center;justify-content:center;transition:all .15s}
 .modal-close:hover{background:var(--red);color:#fff}
-.modal-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;margin-bottom:3px}
+.modal-title{font-family:'Inter',sans-serif;font-size:19px;font-weight:800;margin-bottom:3px}
 .modal-sub{font-size:12.5px;color:var(--t2);margin-bottom:18px}
 
 /* ── CALL TIMELINE ── */
@@ -264,12 +264,12 @@ select.finput{cursor:pointer}
 .stats-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px}
 .stat-c{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 14px;text-align:center}
 .stat-ico{font-size:20px;margin-bottom:6px}
-.stat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800}
+.stat-val{font-family:'Inter',sans-serif;font-size:26px;font-weight:800}
 .stat-lbl{font-size:11px;color:var(--t2);margin-top:3px}
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
 @media(max-width:700px){.charts-row{grid-template-columns:1fr}}
 .chart-c{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px}
-.chart-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px}
+.chart-title{font-family:'Inter',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px}
 .funnel-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
 .funnel-lbl{font-size:11.5px;color:var(--t2);width:90px;flex-shrink:0}
 .funnel-track{flex:1;height:18px;background:var(--bg3);border-radius:4px;overflow:hidden}
@@ -282,7 +282,7 @@ select.finput{cursor:pointer}
 .fu-item.ov{border-color:var(--red);background:rgba(255,71,87,.04)}
 .fu-item.td{border-color:var(--yellow);background:rgba(255,165,2,.04)}
 .fu-date{text-align:center;min-width:44px}
-.fu-day{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+.fu-day{font-family:'Inter',sans-serif;font-size:22px;font-weight:800}
 .fu-mon{font-size:9.5px;color:var(--t2);text-transform:uppercase}
 .fu-info{flex:1}
 .fu-name{font-weight:600;font-size:13.5px}
@@ -352,7 +352,7 @@ select.finput{cursor:pointer}
 .hist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
 .hist-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:all .15s}
 .hist-card:hover{border-color:var(--accent)}
-.hist-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:3px}
+.hist-title{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;margin-bottom:3px}
 .hist-meta{font-size:11.5px;color:var(--t2);margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap}
 .hist-tag{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
 .hist-url{font-size:11.5px;color:var(--accent);margin-bottom:10px;word-break:break-all}
@@ -375,7 +375,7 @@ select.finput{cursor:pointer}
 
 /* ── DEAL CALC ── */
 .deal-range{background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:12px;text-align:center}
-.deal-range-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--a2)}
+.deal-range-val{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--a2)}
 .deal-range-lbl{font-size:11px;color:var(--t2);margin-top:2px}
 
 /* ── BUILDER PASSWORD ── */
@@ -596,10 +596,10 @@ select.finput{cursor:pointer}
       <div class="filter-bar" id="filterBar" style="display:none">
         <span style="font-size:11px;color:var(--t2)">Filter:</span>
         <span class="fchip fchip-all on" onclick="setFilter('all',this)">All <span id="cnt-all">0</span></span>
-        <span class="fchip fchip-nw" onclick="setFilter('no_website',this)">🔴 No Website <span id="cnt-nw">0</span> <span class="add-all-filter" onclick.stop="addAllFilter('no_website')">+ Add all</span></span>
-        <span class="fchip fchip-br" onclick="setFilter('broken',this)">🟡 Broken <span id="cnt-br">0</span> <span class="add-all-filter" onclick.stop="addAllFilter('broken')">+ Add all</span></span>
-        <span class="fchip fchip-ba" onclick="setFilter('basic',this)">🟠 Basic <span id="cnt-ba">0</span> <span class="add-all-filter" onclick.stop="addAllFilter('basic')">+ Add all</span></span>
-        <span class="fchip fchip-nwd" onclick="setFilter('needs_work',this)">🟣 Needs Work <span id="cnt-nwd">0</span> <span class="add-all-filter" onclick.stop="addAllFilter('needs_work')">+ Add all</span></span>
+        <span class="fchip fchip-nw" onclick="setFilter('no_website',this)">🔴 No Website <span id="cnt-nw">0</span> <span class="add-all-filter" onclick="event.stopPropagation();addAllFilter('no_website')">+ Add all</span></span>
+        <span class="fchip fchip-br" onclick="setFilter('broken',this)">🟡 Broken <span id="cnt-br">0</span> <span class="add-all-filter" onclick="event.stopPropagation();addAllFilter('broken')">+ Add all</span></span>
+        <span class="fchip fchip-ba" onclick="setFilter('basic',this)">🟠 Basic <span id="cnt-ba">0</span> <span class="add-all-filter" onclick="event.stopPropagation();addAllFilter('basic')">+ Add all</span></span>
+        <span class="fchip fchip-nwd" onclick="setFilter('needs_work',this)">🟣 Needs Work <span id="cnt-nwd">0</span> <span class="add-all-filter" onclick="event.stopPropagation();addAllFilter('needs_work')">+ Add all</span></span>
         <span class="fchip fchip-gd" onclick="setFilter('good',this)">🟢 Good <span id="cnt-gd">0</span></span>
       </div>
 
@@ -1045,29 +1045,40 @@ async function doSearch() {
 
   // Fire background search
   try {
-    await fetch('/api/search-bg', {
+    const bgResp = await fetch('/api/search-bg', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ jobId, query:q, authToken })
     });
+    if (bgResp.status >= 400) {
+      const txt = await bgResp.text().catch(()=>'');
+      return searchError('Failed to start search (HTTP '+bgResp.status+')\n'+txt.substring(0,300));
+    }
   } catch(e) { return searchError('Failed to start search: '+e.message); }
 
-  // Poll
-  searchPolling = setInterval(() => pollSearch(jobId, q), 2500);
+  // Poll — timeout after 60 s with no results
+  let pollCount = 0;
+  searchPolling = setInterval(() => { pollCount++; pollSearch(jobId, q, pollCount); }, 2500);
 }
 
-async function pollSearch(jobId, query) {
+async function pollSearch(jobId, query, pollCount) {
   if (searchJobId !== jobId) { clearInterval(searchPolling); return; }
   try {
     const r = await fetch(`/api/search-status?jobId=${jobId}`, { headers:{'x-auth-token':authToken} });
+    if (!r.ok) { return searchError('Search status error: HTTP '+r.status); }
     const d = await r.json();
 
     if (d.error && d.status !== 'running') { return searchError(d.error + (d.hint ? '\n\n' + d.hint : '')); }
+
+    // Timeout: 60s with no results
+    if (pollCount >= 24 && (d.total || 0) === 0 && d.status !== 'done') {
+      return searchError('Search timed out. The Google Maps API may be slow or the API key may need the Places API enabled.\n\nCheck: Google Cloud Console → APIs & Services → Enable "Places API"');
+    }
 
     const results = d.results || [];
     const total = d.total || 0;
     const pct = d.status === 'done' ? 100 : Math.min(90, 10 + (d.page||0)*18);
     document.getElementById('progFill').style.width = pct + '%';
-    document.getElementById('progTxt').textContent = d.status === 'done' ? `Found ${total} businesses — analyzing websites…` : `Loading page ${d.page||1}… found ${total} so far`;
+    document.getElementById('progTxt').textContent = d.status === 'done' ? `Found ${total} businesses` : total > 0 ? `Page ${d.page||1} — ${total} found so far…` : `Searching Google Maps… (${Math.round((pollCount||0)*2.5)}s)`;
     document.getElementById('progCnt').textContent = total > 0 ? total + ' found' : '';
 
     if (results.length > searchResults.length) {
@@ -1080,7 +1091,9 @@ async function pollSearch(jobId, query) {
       searchPolling = null;
       searchDone(query, d.status === 'error' ? d.error : null);
     }
-  } catch {}
+  } catch(e) {
+    console.warn('Poll error:', e);
+  }
 }
 
 async function analyzeAndRender(results) {
@@ -1997,7 +2010,7 @@ async function renderDashboard() {
     <!-- Header -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
       <div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800">${now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:22px;font-weight:800">${now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
         <div style="color:var(--t2);font-size:12.5px;margin-top:2px">${s.total} leads · ${todayCallbacks.length} callbacks today · ${overdueCallbacks.length} overdue</div>
       </div>
       <button class="btn btn-s btn-sm" onclick="renderDashboard()"><i class="ri-refresh-line"></i> Refresh</button>
@@ -2016,14 +2029,14 @@ async function renderDashboard() {
         {label:'Outstanding',    val:'Rs '+(ps.total_outstanding||0).toLocaleString(),color:'var(--yellow)',icon:'ri-time-line'},
       ].map(m=>`<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 14px">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><i class="${m.icon}" style="color:${m.color};font-size:16px"></i><span style="font-size:11px;color:var(--t2)">${m.label}</span></div>
-        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:${m.color}">${m.val}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:800;color:${m.color}">${m.val}</div>
       </div>`).join('')}
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
       <!-- Funnel -->
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px">
-        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">Conversion Funnel</div>
+        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">Conversion Funnel</div>
         ${[
           {lbl:'Total Leads',    val:s.total,              c:'var(--t3)'},
           {lbl:'Called',         val:called,                c:'var(--accent)'},
@@ -2038,7 +2051,7 @@ async function renderDashboard() {
 
       <!-- Pipeline stages -->
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px">
-        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">Pipeline by Stage</div>
+        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">Pipeline by Stage</div>
         ${[
           {key:'not_called',      label:'Not Called',       color:'var(--t2)'},
           {key:'called',          label:'Called',           color:'var(--accent)'},
@@ -2061,7 +2074,7 @@ async function renderDashboard() {
     <!-- Today's Tasks -->
     ${todayCallbacks.length||overdueCallbacks.length?`
     <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px">
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">Today's Tasks</div>
+      <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">Today's Tasks</div>
       ${overdueCallbacks.slice(0,5).map(l=>`
         <div class="fu-item ov" style="margin-bottom:8px">
           <div class="fu-info"><div class="fu-name">${l.name}</div><div class="fu-note">Overdue · ${STATUS_LABELS[l.status]||l.status}</div></div>
